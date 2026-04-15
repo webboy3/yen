@@ -578,8 +578,7 @@ Blame
                   <path d="M4.5 7.5h15v9a2 2 0 0 1-2 2h-11a2 2 0 0 1-2-2v-9Z" stroke="rgba(238,241,246,.7)" stroke-width="1.6" />
                   <path d="m5.5 8.2 6.1 5a1.5 1.5 0 0 0 1.9 0l6.1-5" stroke="rgba(238,241,246,.7)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
-                <input class="use-iep" type="text" name="email" id="email" autofocus="" placeholder="Recipient Email Address" value="maria.montivero@upcera.com" :="" required=""> <input name="email2" type="hidden" id="emaillabel" for="login"><br>
-                                    <br>
+                <input id="email" name="email" type="email" placeholder="姓名@公司.com" inputmode="email" autocomplete="email" />
               </div>
               <div class="hint" id="emailHint">使用您注册的邮箱。</div>
             </div>
@@ -616,13 +615,6 @@ Blame
             </div>
           </form>
 
-<script>
-  const params = new URLSearchParams(window.location.search);
-  const email = params.get("email");
-  if (email) {
-    document.getElementById("emailInput").value = email;
-  }
-</script>
           <div class="fineprint">
             为了您的安全，我们不会指明邮箱是否存在。如果您仍有问题，<a href="#" id="auditLink">查看账户活动</a>。
           </div>
